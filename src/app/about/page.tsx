@@ -18,10 +18,15 @@ export default function AboutPage() {
       {/* Page Header */}
       <section className="relative w-full py-28 sm:py-36 bg-primary text-white overflow-hidden flex items-center justify-center">
         {/* Subtle grid background */}
-        <div className="absolute inset-0 opacity-[0.03] pointer-events-none">
-          <svg className="w-full h-full" fill="none" viewBox="0 0 100 100" preserveAspectRatio="none">
-            <path d="M0,0 L100,100 M0,100 L100,0" stroke="white" strokeWidth="0.5" />
-          </svg>
+        <div className="absolute inset-0 z-0">
+          <Image
+            src="/assets/hero-bg.webp"
+            alt="Background Image"
+            fill
+            className="object-cover object-center animate-subtle-zoom select-none brightness-[0.5]"
+            sizes="100vw"
+          />
+          <div className="absolute inset-0 bg-primary/80" />
         </div>
         <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center flex flex-col gap-4">
           <span className="text-[10px] sm:text-sm font-bold tracking-widest text-accent uppercase">
