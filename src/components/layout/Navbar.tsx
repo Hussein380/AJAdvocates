@@ -71,14 +71,15 @@ export default function Navbar() {
   };
 
   return (
-    <header
-      className={cn(
-        "fixed top-0 left-0 right-0 z-50 transition-all duration-300 w-full",
-        scrolled
-          ? "bg-white/95 backdrop-blur-md shadow-md py-3"
-          : "bg-white/95 backdrop-blur-sm border-b border-gray-100 py-4"
-      )}
-    >
+    <>
+      <header
+        className={cn(
+          "fixed top-0 left-0 right-0 z-50 transition-all duration-300 w-full",
+          scrolled
+            ? "bg-white/95 backdrop-blur-md shadow-md py-3"
+            : "bg-white/95 backdrop-blur-sm border-b border-gray-100 py-4"
+        )}
+      >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between">
           {/* Logo */}
@@ -177,6 +178,7 @@ export default function Navbar() {
           </div>
         </div>
       </div>
+      </header>
 
       {/* Mobile Drawer Overlay */}
       <div
@@ -265,6 +267,6 @@ export default function Navbar() {
           </div>
         </div>
       </div>
-    </header>
+    </>
   );
 }
