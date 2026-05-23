@@ -21,8 +21,9 @@ async function getPost(slug: string) {
   return client.fetch(query, { slug });
 }
 
-export async function generateMetadata({ params }: { params: { slug: string } }) {
-  const post = await getPost(params.slug);
+export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }) {
+  const { slug } = await params;
+  const post = await getPost(slug);
   if (!post) return { title: "Not Found" };
   
   const description = post.body?.[0]?.children?.[0]?.text?.substring(0, 160) || "Read this legal insight by OJ Advocates LLP.";
@@ -54,8 +55,9 @@ export async function generateMetadata({ params }: { params: { slug: string } })
   };
 }
 
-export default async function BlogPostPage({ params }: { params: { slug: string } }) {
-  const post = await getPost(params.slug);
+export default async function BlogPostPage({ params }: { params: Promise<{ slug: string }> }) {
+  const { slug } = await params;
+  const post = await getPost(slug);
 
   if (!post) {
     notFound();
