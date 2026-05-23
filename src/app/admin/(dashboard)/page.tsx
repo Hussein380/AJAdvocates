@@ -32,9 +32,9 @@ export default function AdminPage() {
           </div>
           <div className="bg-gray-50 px-5 py-3">
             <div className="text-sm">
-              <a href="http://localhost:3333" target="_blank" rel="noopener noreferrer" className="font-medium text-accent hover:text-accent/80">
+              <Link href="/admin/studio" className="font-medium text-accent hover:text-accent/80">
                 Open Studio <span aria-hidden="true">&rarr;</span>
-              </a>
+              </Link>
             </div>
           </div>
         </div>
