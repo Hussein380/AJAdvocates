@@ -262,7 +262,14 @@ export default function Navbar() {
         </div>
 
         {/* Action Button */}
-        <div className="pt-4 border-t border-gray-100 flex flex-col gap-4">
+        <div className="pt-4 border-t border-gray-100 flex flex-col gap-3">
+          <Link
+            href="/admin/login"
+            onClick={() => setIsOpen(false)}
+            className="w-full text-center border-2 border-primary/10 text-primary hover:border-primary hover:bg-primary hover:text-white text-sm font-semibold uppercase tracking-widest py-3 rounded-sm transition-colors duration-300"
+          >
+            Admin Login
+          </Link>
           <Link
             href="/contact"
             onClick={() => setIsOpen(false)}
@@ -270,17 +277,8 @@ export default function Navbar() {
           >
             Request Consultation
           </Link>
-          <div className="flex justify-between items-center px-2">
-            <Link
-              href="/admin/login"
-              onClick={() => setIsOpen(false)}
-              className="text-sm font-semibold tracking-widest text-primary hover:text-accent uppercase"
-            >
-              Login
-            </Link>
-            <div className="text-center text-sm text-muted font-medium">
-              Call: +254 722 172 071
-            </div>
+          <div className="text-center text-sm text-muted font-medium mt-2">
+            Call: +254 722 172 071
           </div>
         </div>
       </div>
