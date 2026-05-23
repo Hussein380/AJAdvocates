@@ -268,7 +268,7 @@ export default function Navbar() {
             onClick={() => setIsOpen(false)}
             className="w-full text-center border-2 border-primary/10 text-primary hover:border-primary hover:bg-primary hover:text-white text-sm font-semibold uppercase tracking-widest py-3 rounded-sm transition-colors duration-300"
           >
-            Admin Login
+            Login
           </Link>
           <Link
             href="/contact"
