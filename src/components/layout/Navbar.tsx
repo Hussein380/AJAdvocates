@@ -150,13 +150,21 @@ export default function Navbar() {
             })}
 
             {/* Direct Contact Button */}
-            <Link
-              href="/contact"
-              className="inline-flex items-center gap-2 bg-primary hover:bg-accent text-white text-sm font-semibold uppercase tracking-widest px-5 py-2.5 rounded-sm transition-colors duration-300 shadow-sm"
-            >
-              <Briefcase className="w-3.5 h-3.5" />
-              Contact Us
-            </Link>
+            <div className="flex items-center gap-4">
+              <Link
+                href="/admin/login"
+                className="inline-flex items-center text-sm font-semibold uppercase tracking-widest text-primary hover:text-accent transition-colors duration-200"
+              >
+                Login
+              </Link>
+              <Link
+                href="/contact"
+                className="inline-flex items-center gap-2 bg-primary hover:bg-accent text-white text-sm font-semibold uppercase tracking-widest px-5 py-2.5 rounded-sm transition-colors duration-300 shadow-sm"
+              >
+                <Briefcase className="w-3.5 h-3.5" />
+                Contact Us
+              </Link>
+            </div>
           </nav>
 
           {/* Mobile Menu Button */}
@@ -262,8 +270,17 @@ export default function Navbar() {
           >
             Request Consultation
           </Link>
-          <div className="text-center text-sm text-muted font-medium">
-            Call: +254 722 172 071
+          <div className="flex justify-between items-center px-2">
+            <Link
+              href="/admin/login"
+              onClick={() => setIsOpen(false)}
+              className="text-sm font-semibold tracking-widest text-primary hover:text-accent uppercase"
+            >
+              Login
+            </Link>
+            <div className="text-center text-sm text-muted font-medium">
+              Call: +254 722 172 071
+            </div>
           </div>
         </div>
       </div>
