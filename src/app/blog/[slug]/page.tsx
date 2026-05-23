@@ -4,6 +4,7 @@ import { ChevronRight, Calendar, User, ArrowLeft } from "lucide-react";
 import { client, urlFor } from "@/lib/sanity";
 import { PortableText } from "@portabletext/react";
 import SocialShare from "@/components/ui/SocialShare";
+import { PortableTextImage } from "@/components/ui/PortableTextImage";
 import { notFound } from "next/navigation";
 
 export const revalidate = 60; // Revalidate every 60 seconds
@@ -24,9 +25,32 @@ export async function generateMetadata({ params }: { params: { slug: string } })
   const post = await getPost(params.slug);
   if (!post) return { title: "Not Found" };
   
+  const description = post.body?.[0]?.children?.[0]?.text?.substring(0, 160) || "Read this legal insight by OJ Advocates LLP.";
+  const imageUrl = post.image ? urlFor(post.image).url() : "https://ojadvocatesllp.com/assets/hero-bg.webp";
+
   return {
     title: `${post.title} | OJ Advocates LLP`,
-    description: post.body?.[0]?.children?.[0]?.text?.substring(0, 160) || "Read this legal insight by OJ Advocates LLP.",
+    description: description,
+    openGraph: {
+      title: `${post.title} | OJ Advocates LLP`,
+      description: description,
+      url: `https://ojadvocatesllp.com/blog/${params.slug}`,
+      siteName: "OJ Advocates LLP",
+      images: [
+        {
+          url: imageUrl,
+          width: 1200,
+          height: 630,
+        },
+      ],
+      type: "article",
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: `${post.title} | OJ Advocates LLP`,
+      description: description,
+      images: [imageUrl],
+    },
   };
 }
 
@@ -101,7 +125,14 @@ export default async function BlogPostPage({ params }: { params: { slug: string 
 
         {/* Content Body */}
         <article className="prose prose-lg sm:prose-xl max-w-none prose-headings:font-serif prose-headings:text-primary prose-p:text-muted prose-p:leading-relaxed prose-a:text-accent hover:prose-a:text-accent-hover prose-strong:text-primary">
-          <PortableText value={post.body} />
+          <PortableText 
+            value={post.body} 
+            components={{
+              types: {
+                image: PortableTextImage
+              }
+            }}
+          />
         </article>
 
         {/* Footer Share Bar */}
