@@ -35,7 +35,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
     openGraph: {
       title: `${post.title} | OJ Advocates LLP`,
       description: description,
-      url: `https://ojadvocatesllp.com/blog/${params.slug}`,
+      url: `https://ojadvocatesllp.com/blog/${slug}`,
       siteName: "OJ Advocates LLP",
       images: [
         {
