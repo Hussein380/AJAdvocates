@@ -24,6 +24,7 @@ export default function AdminPage() {
                   <dt className="truncate text-sm font-medium text-gray-500">Content Management</dt>
                   <dd>
                     <div className="text-lg font-medium text-primary">Sanity Studio</div>
+                    <div className="text-sm text-gray-400 mt-1">Manage Blogs & Careers here</div>
                   </dd>
                 </dl>
               </div>
@@ -31,29 +32,9 @@ export default function AdminPage() {
           </div>
           <div className="bg-gray-50 px-5 py-3">
             <div className="text-sm">
-              {/* Note: In a real setup, you might embed Sanity or link to the external studio */}
-              <a href="https://h799tz6c.sanity.studio" target="_blank" rel="noopener noreferrer" className="font-medium text-accent hover:text-accent/80">
+              <a href="http://localhost:3333" target="_blank" rel="noopener noreferrer" className="font-medium text-accent hover:text-accent/80">
                 Open Studio <span aria-hidden="true">&rarr;</span>
               </a>
-            </div>
-          </div>
-        </div>
-
-        {/* Custom Modules (if added later) */}
-        <div className="overflow-hidden rounded-lg bg-white shadow border border-gray-100 opacity-50">
-          <div className="p-5">
-            <div className="flex items-center">
-              <div className="flex-shrink-0">
-                <Briefcase className="h-6 w-6 text-gray-400" aria-hidden="true" />
-              </div>
-              <div className="ml-5 w-0 flex-1">
-                <dl>
-                  <dt className="truncate text-sm font-medium text-gray-500">Coming Soon</dt>
-                  <dd>
-                    <div className="text-lg font-medium text-gray-900">Applicant Tracking</div>
-                  </dd>
-                </dl>
-              </div>
             </div>
           </div>
         </div>
