@@ -10,19 +10,27 @@ import {
   Scale
 } from "lucide-react";
 
-interface JobOpening {
-  id: string;
-  title: string;
-  department: string;
-  location: string;
-  type: string;
-  description: string;
-  requirements: string[];
+import { client } from "@/lib/sanity";
+import { PortableText } from "@portabletext/react";
+
+export const revalidate = 60; // Revalidate every 60 seconds
+
+async function getJobs() {
+  const query = `*[_type == "career"] | order(publishedAt desc) {
+    _id,
+    title,
+    "slug": slug.current,
+    department,
+    location,
+    type,
+    publishedAt,
+    description
+  }`;
+  return client.fetch(query);
 }
 
-const jobOpenings: JobOpening[] = [];
-
-export default function CareersPage() {
+export default async function CareersPage() {
+  const jobOpenings = await getJobs();
   return (
     <div className="w-full flex flex-col items-center">
       {/* Page Header */}
@@ -99,9 +107,9 @@ export default function CareersPage() {
 
           {jobOpenings.length > 0 ? (
             <div className="flex flex-col gap-8">
-              {jobOpenings.map((job) => (
+              {jobOpenings.map((job: any) => (
                 <div 
-                  key={job.id} 
+                  key={job._id} 
                   className="bg-white border border-gray-100 shadow-sm p-6 sm:p-8 rounded-sm hover:shadow-md transition-shadow duration-300 flex flex-col gap-6"
                 >
                   {/* Job Metadata */}
@@ -123,19 +131,15 @@ export default function CareersPage() {
                   </div>
 
                   {/* Job Description */}
-                  <div className="flex flex-col gap-3">
-                    <p className="text-base sm:text-lg text-brand-gray leading-relaxed font-sans">{job.description}</p>
-                    <div className="mt-2 flex flex-col gap-2">
-                      <span className="text-sm text-primary font-bold uppercase tracking-wider">Candidate Requirements:</span>
-                      <ul className="flex flex-col gap-2">
-                        {job.requirements.map((req, idx) => (
-                          <li key={idx} className="flex gap-2 items-start text-base text-brand-gray font-sans">
-                            <CheckCircle2 className="w-4 h-4 text-accent shrink-0 mt-0.5" />
-                            <span className="leading-relaxed">{req}</span>
-                          </li>
-                        ))}
-                      </ul>
-                    </div>
+                  <div className="prose prose-sm max-w-none text-brand-gray font-sans prose-p:leading-relaxed prose-li:my-1 prose-ul:my-2 prose-ul:list-disc prose-ul:pl-5">
+                    <PortableText value={job.description} />
+                  </div>
+                  
+                  {/* Share & Apply Links */}
+                  <div className="pt-4 mt-2 border-t border-gray-50 flex items-center justify-between">
+                     <Link href={`mailto:info@ojadvocatesllp.com?subject=Application for ${job.title}`} className="text-sm font-semibold uppercase tracking-wider text-accent hover:text-accent-hover transition-colors">
+                        Apply Now
+                     </Link>
                   </div>
                 </div>
               ))}

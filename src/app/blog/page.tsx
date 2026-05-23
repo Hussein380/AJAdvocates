@@ -20,9 +20,26 @@ interface BlogPost {
   excerpt: string;
 }
 
-const blogPosts: BlogPost[] = [];
+import { client } from "@/lib/sanity";
+import { PortableText } from "@portabletext/react";
 
-export default function BlogPage() {
+// Add caching behavior for Next.js 14+ fetch
+export const revalidate = 60; // Revalidate every 60 seconds
+
+async function getPosts() {
+  const query = `*[_type == "post"] | order(publishedAt desc) {
+    _id,
+    title,
+    "slug": slug.current,
+    publishedAt,
+    "imageUrl": image.asset->url,
+    body
+  }`;
+  return client.fetch(query);
+}
+
+export default async function BlogPage() {
+  const blogPosts = await getPosts();
   return (
     <div className="w-full flex flex-col items-center">
       {/* Page Header */}
@@ -63,15 +80,15 @@ export default function BlogPage() {
       <section className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 sm:py-28">
         {blogPosts.length > 0 ? (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {blogPosts.map((post) => (
+          {blogPosts.map((post: any) => (
             <div 
-              key={post.id} 
+              key={post._id} 
               className="bg-white border border-gray-100 shadow-sm rounded-sm overflow-hidden flex flex-col justify-between group hover:shadow-md transition-shadow duration-300"
             >
               {/* Category tag */}
               <div className="p-6 pb-2">
                 <span className="text-[9px] font-bold text-accent uppercase tracking-widest bg-champagne/30 px-2.5 py-1 rounded-sm w-fit">
-                  {post.category}
+                  Article
                 </span>
               </div>
 
@@ -80,8 +97,8 @@ export default function BlogPage() {
                 <h2 className="text-lg sm:text-lg font-serif font-bold text-primary leading-snug group-hover:text-accent transition-colors duration-200">
                   {post.title}
                 </h2>
-                <p className="text-sm text-muted leading-relaxed font-sans">
-                  {post.excerpt}
+                <p className="text-sm text-muted leading-relaxed font-sans line-clamp-3">
+                  {post.body?.[0]?.children?.[0]?.text || "Read full legal insights on this topic inside..."}
                 </p>
               </div>
 
@@ -90,11 +107,11 @@ export default function BlogPage() {
                 <div className="flex items-center gap-4 text-[10px] text-muted font-medium font-mono">
                   <span className="flex items-center gap-1">
                     <Calendar className="w-3.5 h-3.5" />
-                    {post.date}
+                    {new Date(post.publishedAt).toLocaleDateString("en-US", { year: 'numeric', month: 'short', day: 'numeric' })}
                   </span>
                   <span className="flex items-center gap-1">
                     <User className="w-3.5 h-3.5" />
-                    {post.author}
+                    OJ Advocates
                   </span>
                 </div>
 
