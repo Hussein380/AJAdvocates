@@ -1,7 +1,24 @@
 "use client";
 
-import { Twitter, Linkedin, Link as LinkIcon, Check } from "lucide-react";
+import { Link as LinkIcon, Check } from "lucide-react";
 import { useState, useEffect } from "react";
+
+// Raw SVG for Twitter / X
+const TwitterIcon = ({ className }: { className?: string }) => (
+  <svg className={className} xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <path d="M4 4l11.733 16h4.267l-11.733 -16z"></path>
+    <path d="M4 20l6.768 -6.768m2.46 -2.46l6.772 -6.772"></path>
+  </svg>
+);
+
+// Raw SVG for LinkedIn
+const LinkedinIcon = ({ className }: { className?: string }) => (
+  <svg className={className} xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path>
+    <rect x="2" y="9" width="4" height="12"></rect>
+    <circle cx="4" cy="4" r="2"></circle>
+  </svg>
+);
 
 interface SocialShareProps {
   url: string;
@@ -10,26 +27,30 @@ interface SocialShareProps {
 
 export default function SocialShare({ url, title }: SocialShareProps) {
   const [copied, setCopied] = useState(false);
-  const [currentUrl, setCurrentUrl] = useState(url);
+  const [fullUrl, setFullUrl] = useState("");
 
   useEffect(() => {
-    // Ensure we have an absolute URL for sharing
-    if (typeof window !== "undefined" && !url.startsWith("http")) {
-      setCurrentUrl(`${window.location.origin}${url.startsWith("/") ? url : `/${url}`}`);
+    if (typeof window !== "undefined") {
+      setFullUrl(`${window.location.origin}${url.startsWith('/') ? '' : '/'}${url}`);
     }
   }, [url]);
 
-  const encodedUrl = encodeURIComponent(currentUrl);
-  const encodedTitle = encodeURIComponent(title);
+  const shareToTwitter = () => {
+    const shareUrl = `https://twitter.com/intent/tweet?url=${encodeURIComponent(fullUrl)}&text=${encodeURIComponent(title)}`;
+    window.open(shareUrl, "_blank", "noopener,noreferrer");
+  };
 
-  const handleCopyLink = async () => {
-    try {
-      await navigator.clipboard.writeText(currentUrl);
+  const shareToLinkedIn = () => {
+    const shareUrl = `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(fullUrl)}`;
+    window.open(shareUrl, "_blank", "noopener,noreferrer");
+  };
+
+  const copyToClipboard = () => {
+    if (!fullUrl) return;
+    navigator.clipboard.writeText(fullUrl).then(() => {
       setCopied(true);
       setTimeout(() => setCopied(false), 2000);
-    } catch (err) {
-      console.error("Failed to copy text: ", err);
-    }
+    });
   };
 
   return (
@@ -39,32 +60,26 @@ export default function SocialShare({ url, title }: SocialShareProps) {
       </span>
       
       {/* X / Twitter Share */}
-      <a
-        href={`https://twitter.com/intent/tweet?url=${encodedUrl}&text=${encodedTitle}`}
-        target="_blank"
-        rel="noopener noreferrer"
+      <button 
+        onClick={shareToTwitter}
         className="p-2.5 rounded-full bg-gray-50 border border-gray-100 text-primary hover:text-white hover:bg-black hover:border-black transition-all duration-300"
         aria-label="Share on X"
       >
-        <svg viewBox="0 0 24 24" aria-hidden="true" className="w-4 h-4 fill-current">
-          <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 22.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
-        </svg>
-      </a>
+        <TwitterIcon className="w-4 h-4" />
+      </button>
 
       {/* LinkedIn Share */}
-      <a
-        href={`https://www.linkedin.com/sharing/share-offsite/?url=${encodedUrl}`}
-        target="_blank"
-        rel="noopener noreferrer"
+      <button 
+        onClick={shareToLinkedIn}
         className="p-2.5 rounded-full bg-gray-50 border border-gray-100 text-primary hover:text-white hover:bg-[#0A66C2] hover:border-[#0A66C2] transition-all duration-300"
         aria-label="Share on LinkedIn"
       >
-        <Linkedin className="w-4 h-4" />
-      </a>
+        <LinkedinIcon className="w-4 h-4" />
+      </button>
 
       {/* Copy Link */}
       <button
-        onClick={handleCopyLink}
+        onClick={copyToClipboard}
         className="p-2.5 rounded-full bg-gray-50 border border-gray-100 text-primary hover:text-accent hover:bg-champagne/30 hover:border-champagne transition-all duration-300"
         aria-label="Copy link"
       >
